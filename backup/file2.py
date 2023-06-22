@@ -1,13 +1,11 @@
 from pygoogle_image import image as pi
-from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 import sys
-import os
 
 class DownloaderThread(QThread):
-    images_downloaded = pyqtSignal(list)
+    progress_updated = pyqtSignal(int)
 
     def __init__(self, search_query, num_images):
         super().__init__()
@@ -15,13 +13,17 @@ class DownloaderThread(QThread):
         self.num_images = num_images
 
     def run(self):
-        downloaded_images = pi.download(self.search_query, self.num_images)
-        self.images_downloaded.emit(downloaded_images)
+        self.progress_updated.emit(0)  # Initial value
+        pi.download(self.search_query, self.num_images, self.update_progress)
+        self.progress_updated.emit(100)  # Finished value
+
+    def update_progress(self, progress):
+        self.progress_updated.emit(progress)
 
 class window(QWidget):
     def __init__(self, parent=None):
         super(window, self).__init__(parent)
-        self.resize(500,300)
+        # self.resize(200,50)
         self.setWindowTitle("pyqt")
         # label 1 (header)
         self.label = QLabel(self)
@@ -65,9 +67,9 @@ class window(QWidget):
         self.line2.setFixedWidth(400)
         self.line2.setFixedHeight(50)
 
-        
-        self.image_label = QLabel(self)
-        self.image_label.setGeometry(10, 220, 380, 280)
+        # QProgressBar
+        self.progress_bar = QProgressBar(self)
+        self.progress_bar.setGeometry(10, 220, 380, 20)
 
         # Qpushbutton
         font4 = QFont()
@@ -75,7 +77,7 @@ class window(QWidget):
         font4.setCapitalization(True)
         button = QPushButton(self)
         button.setText("Download now...")
-        button.move(120,220)
+        button.move(120, 250)
         button.setFixedWidth(150)
         button.setFixedHeight(60)
         button.setFont(font4)
@@ -83,40 +85,20 @@ class window(QWidget):
 
     def download_images(self):
         search_query = self.line1.text()
-        try:
-            num_images = int(self.line2.text())
-        except ValueError:
-            QMessageBox.warning(self, "Invalid Input", "Please enter a valid integer for the number of images.")
-            return
+        num_images = int(self.line2.text())
 
         self.downloader_thread = DownloaderThread(search_query, num_images)
-        self.downloader_thread.images_downloaded.connect(self.display_images)  # Connect images_downloaded signal
-        
+        self.downloader_thread.progress_updated.connect(self.update_progress)
         self.downloader_thread.start()
 
-    def display_images(self, downloaded_images):
-    # Clear existing image
-        self.image_label.clear()
-
-        if downloaded_images:
-            # Display the first downloaded image
-            first_image_path = downloaded_images[0]  # Assuming the first image path is the first element in the list
-            pixmap = QPixmap(first_image_path)
-            self.image_label.setPixmap(pixmap.scaled(380, 280, Qt.AspectRatioMode.KeepAspectRatio))
-        else:
-            QMessageBox.warning(self, "No Images", "No images were downloaded.")
-
-        # You can loop through `downloaded_images` to display all the downloaded images if needed
-
-
+    def update_progress(self, progress):
+        self.progress_bar.setValue(progress)
 
 def main():
     app = QApplication(sys.argv)
     ex = window()
     ex.show()
     sys.exit(app.exec_())
-
-
 
 if __name__ == '__main__':
     main()

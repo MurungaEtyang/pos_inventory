@@ -1,0 +1,72 @@
+[
+    {
+        "product name": "television",
+        "product quantity": 1000,
+        "product price": 40000,
+        "product code": "123456",
+        "product brand": "hisense",
+        "product vat": "kra",
+        "percentage vat": 30,
+        "total amount": 52000000.0
+    },
+    {
+        "product name": "television",
+        "product quantity": 1000,
+        "product price": 30000,
+        "product code": "123456789",
+        "product brand": "vitron",
+        "product vat": "kra",
+        "percentage vat": 30,
+        "total amount": 39000000.0
+    },
+    {
+        "product name": "digital television",
+        "product quantity": 1000,
+        "product price": 15000,
+        "product code": "123456789123456",
+        "product brand": "ctv",
+        "product vat": "kra",
+        "percentage vat": 30,
+        "total amount": 19500000.0
+    },
+    {
+        "product name": "digital television",
+        "product quantity": 1000,
+        "product price": 15000,
+        "product code": "123456789123456789",
+        "product brand": "smart line",
+        "product vat": "kra",
+        "percentage vat": 30,
+        "total amount": 19500000.0
+    },
+    {
+        "product name": "fgfg",
+        "product quantity": 11,
+        "product price": 11,
+        "product code": "11",
+        "product brand": "11",
+        "product vat": "11",
+        "percentage vat": 11,
+        "total amount": 134.31
+    },
+    {
+        "product name": "cup",
+        "product quantity": 44,
+        "product price": 112,
+        "product code": "445",
+        "product brand": "44",
+        "product vat": "443",
+        "percentage vat": 4434,
+        "total amount": 223435.52
+    },
+    {
+        "product name": "trytr",
+        "product quantity": 22,
+        "product price": 223,
+        "product code": "233",
+        "product brand": "uru",
+        "product vat": "33",
+        "percentage vat": 1212,
+        "total amount": 64366.719999999994
+    }
+]
